@@ -2,7 +2,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
-// import { cloudinaryStorage } from 'payload-plugin-cloudinary'
+import { cloudinaryStorage } from 'payload-plugin-cloudinary'
 import { fileURLToPath } from 'url'
 
 import { devUser } from './helpers/credentials.js'
@@ -32,7 +32,7 @@ export default buildConfig({
       slug: 'media',
       fields: [],
       upload: {
-        staticDir: path.resolve(dirname, 'media')
+        displayPreview: true
       }
     }
   ],
@@ -45,11 +45,19 @@ export default buildConfig({
     await seed(payload)
   },
   plugins: [
-    // cloudinaryStorage({
-    //   collections: {
-    //     posts: true,
-    //   },
-    // }),
+    cloudinaryStorage({
+      collections: {
+        media: true
+      },
+      configOptions: {
+        api_key: process.env.CLOUDINARY_API_KEY || 'test-key',
+        api_secret: process.env.CLOUDINARY_API_SECRET || 'test-secret',
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'test-cloud-name'
+      },
+      uploadApiOptions: {
+        folder: process.env.CLOUDINARY_FOLDER || 'test-folder'
+      }
+    })
   ],
   secret: process.env.PAYLOAD_SECRET || 'test-secret_key',
   typescript: {
