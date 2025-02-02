@@ -33,7 +33,7 @@ export const getStaticHandler = ({ collection }: GetStaticHandlerArgs): StaticHa
       }
 
       // If the request originates from Node, simulate the response to prevent downloading the entire file from
-      // Cloudinary, since we only need to modify some field values
+      // Cloudinary, since we only need to modify some field values.
       const isRequestedByNode = req.headers.get('user-agent') === 'node'
 
       if (isRequestedByNode) {

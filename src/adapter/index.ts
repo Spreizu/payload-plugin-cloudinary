@@ -38,6 +38,10 @@ function getFields(getCldService: () => CloudinaryService): Field[] {
       index: true
     },
     {
+      name: 'customFilename',
+      type: 'text'
+    },
+    {
       name: 'resourceType',
       type: 'select',
       admin: { hidden: true, readOnly: true },
@@ -54,11 +58,6 @@ function getFields(getCldService: () => CloudinaryService): Field[] {
       type: 'json',
       admin: { hidden: true, readOnly: true },
       defaultValue: []
-    },
-    {
-      name: 'placeholder',
-      type: 'text',
-      admin: { hidden: true, readOnly: true }
     },
     {
       name: 'format',

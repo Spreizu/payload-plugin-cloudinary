@@ -17,9 +17,12 @@ export const getHandleUpload = ({ collection, getCldService }: GetHandleUploadAr
     const doc: CloudinaryFile = data
     const previousDoc = await getPreviousDoc({ collection, doc, req })
     const uploadResponse = await getCldService().upload({ file, req })
+    const customFilename =
+      (doc.customFilename || doc.filename?.substring(0, doc.filename?.lastIndexOf('.')) || doc.filename) ?? ''
 
     // Update doc
     Object.assign(doc, {
+      customFilename,
       format: uploadResponse.format ?? getFileExtensionByMimeType(doc.mimeType) ?? getFileExtensionByName(doc.filename),
       height: uploadResponse.height,
       publicId: uploadResponse.public_id,
@@ -28,9 +31,6 @@ export const getHandleUpload = ({ collection, getCldService }: GetHandleUploadAr
       url: uploadResponse.secure_url,
       width: uploadResponse.width
     })
-
-    // Update placeholder
-    doc.placeholder = await getCldService().getPlaceholder(doc)
 
     // Queue transformations task
     await req.payload.jobs.queue({
