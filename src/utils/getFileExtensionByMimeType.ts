@@ -7,9 +7,9 @@ import mime from 'mime'
  * @returns {string | null} - The file extension as a string if the MIME type is valid and not empty. Otherwise, returns null.
  */
 export function getFileExtensionByMimeType(mimeType: null | string | undefined): null | string {
-	if (!mimeType || mimeType.trim() === '') {
-		return null
-	}
+  if (!mimeType || mimeType.trim() === '') {
+    return null
+  }
 
-	return mime.getExtension(mimeType)
+  return mime.getExtension(mimeType)
 }

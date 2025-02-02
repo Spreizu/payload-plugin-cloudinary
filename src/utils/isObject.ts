@@ -6,5 +6,5 @@
  * @returns {boolean} - Returns true if the value is an object, false otherwise.
  */
 export const isObject = <T = object>(value: unknown): value is T => {
-	return !!value && value.constructor === Object
+  return !!value && value.constructor === Object
 }

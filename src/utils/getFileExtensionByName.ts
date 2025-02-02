@@ -8,15 +8,15 @@ import { last } from './last.js'
  * @returns {string | null} - The file extension in lowercase if present, otherwise null.
  */
 export function getFileExtensionByName(filename: null | string | undefined): null | string {
-	if (!filename || filename.trim() === '') {
-		return null
-	}
+  if (!filename || filename.trim() === '') {
+    return null
+  }
 
-	const parts = filename.split('.')
+  const parts = filename.split('.')
 
-	if (parts.length < 2 || !last(parts)) {
-		return null
-	}
+  if (parts.length < 2 || !last(parts)) {
+    return null
+  }
 
-	return parts.pop()?.toLowerCase() ?? null
+  return parts.pop()?.toLowerCase() ?? null
 }
