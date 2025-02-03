@@ -3,6 +3,8 @@ import type { CollectionAfterReadHook } from 'payload'
 import type { CloudinaryService } from '../services/CloudinaryService.js'
 import type { CloudinaryFile } from '../types.js'
 
+import { getMediaDimensions } from '../utils/index.js'
+
 /**
  * Updates built-in attributes of a document after it is read.
  *
@@ -14,8 +16,12 @@ export const updateBuiltInAttributes: (
 ) => CollectionAfterReadHook<CloudinaryFile> =
   (getCldService: () => CloudinaryService): CollectionAfterReadHook<CloudinaryFile> =>
   ({ doc }) => {
+    const mediaDimensions = getMediaDimensions(doc)
+
     return {
       ...doc,
-      thumbnailURL: getCldService().getThumbnailURL(doc)
+      height: mediaDimensions.height,
+      thumbnailURL: getCldService().getThumbnailURL(doc),
+      width: mediaDimensions.width
     }
   }

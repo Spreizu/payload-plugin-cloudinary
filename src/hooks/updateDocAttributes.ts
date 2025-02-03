@@ -17,9 +17,14 @@ export const updateDocAttributes: (
   getCldService: () => CloudinaryService
 ) => CollectionBeforeChangeHook<CloudinaryFile> =
   (getCldService: () => CloudinaryService): CollectionBeforeChangeHook<CloudinaryFile> =>
-  async ({ collection, data, operation, originalDoc, req }) => {
-    // Only run for existing files when there's a possibility that transformations need to be updated
-    if (operation !== 'update' || originalDoc?.publicId !== data.publicId || !!req.file) {
+  async ({ collection, data, originalDoc, req }) => {
+    // Skip for new files
+    if (req.file) {
+      return
+    }
+
+    // Skip when transformations did not change
+    if (JSON.stringify(data.rawTransformations) === JSON.stringify(originalDoc?.rawTransformations)) {
       return
     }
 

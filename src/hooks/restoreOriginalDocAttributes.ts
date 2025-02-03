@@ -1,4 +1,4 @@
-import type { CollectionBeforeChangeHook } from 'payload'
+import type { CollectionBeforeChangeHook, PayloadRequest } from 'payload'
 
 import type { CloudinaryFile } from '../types.js'
 
@@ -8,36 +8,28 @@ import type { CloudinaryFile } from '../types.js'
  *
  * @param {Object} args - Method arguments.
  * @param {CloudinaryFile} args.data - The updated file data.
- * @param {string} args.operation - The type of operation being performed (e.g., 'update').
  * @param {CloudinaryFile} args.originalDoc - The original document before the update.
+ * @param {PayloadRequest} args.req - The request object.
  * @returns {void}
  */
 export const restoreOriginalDocAttributes: CollectionBeforeChangeHook<CloudinaryFile> = ({
   data,
-  operation,
-  originalDoc
+  originalDoc,
+  req
 }: {
   data: Partial<CloudinaryFile>
-  operation: string
   originalDoc?: CloudinaryFile
+  req: PayloadRequest
 }): void => {
-  if (operation !== 'update' || originalDoc?.publicId !== data.publicId) {
+  // Skip for new files
+  if (req.file) {
     return
   }
 
-  if (originalDoc?.width) {
-    data.width = originalDoc.width
-  }
-
-  if (originalDoc?.height) {
-    data.height = originalDoc.height
-  }
-
-  if (originalDoc?.filesize) {
-    data.filesize = originalDoc.filesize
-  }
-
-  if (originalDoc?.mimeType) {
-    data.mimeType = originalDoc.mimeType
-  }
+  Object.assign(data, {
+    filesize: originalDoc?.filesize ?? data.filesize,
+    height: originalDoc?.height ?? data.height,
+    mimeType: originalDoc?.mimeType ?? data.mimeType,
+    width: originalDoc?.width ?? data.width
+  })
 }

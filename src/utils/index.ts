@@ -1,5 +1,6 @@
 export * from './getFileExtensionByMimeType.js'
 export * from './getFileExtensionByName.js'
+export * from './getMediaDimensions.js'
 export * from './getResourceTypeByMimeType.js'
 export * from './isMediaType.js'
 export * from './isObject.js'
