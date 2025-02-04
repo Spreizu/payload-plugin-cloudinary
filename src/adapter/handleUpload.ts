@@ -23,8 +23,10 @@ export const getHandleUpload = ({ collection, getCldService }: GetHandleUploadAr
     // Update doc
     Object.assign(doc, {
       customFilename,
+      filesize: uploadResponse.bytes,
       format: uploadResponse.format ?? getFileExtensionByMimeType(doc.mimeType) ?? getFileExtensionByName(doc.filename),
       height: uploadResponse.height,
+      isProcessing: true,
       publicId: uploadResponse.public_id,
       rawTransformations: [], // Ensure transformations are reset when the file is replaced
       resourceType: uploadResponse.resource_type,
